@@ -19,7 +19,8 @@ public class Loader {
             String title = firstLine[0];
             String id = firstLine[1];
 
-            List<String> genres = Arrays.asList(lines.get(i + 1).split(",\\s*"));
+            String[] secondLine = lines.get(i + 1).split(",\\s*");
+            List<String> genres = Arrays.asList(secondLine);
             movies.add(new Movie(title, id, genres));
         }
 
@@ -35,7 +36,8 @@ public class Loader {
             String name = firstLine[0];
             String id = firstLine[1];
 
-            List<String> movieIds = Arrays.asList(lines.get(i + 1).split(",\\s*"));
+            String[] secondLine = lines.get(i + 1).split(",\\s*");
+            List<String> movieIds = Arrays.asList(secondLine);
             users.add(new User(name, id, movieIds));
         }
 

@@ -15,6 +15,8 @@ public class Movie {
     {
         FormatValidator.validateMovieTitle(title);
         FormatValidator.validateMovieId(id);
+        FormatValidator.validateMovieIdMatchesTitle(id,title);
+
         this.title  = title;
         this.id     = id;
         this.genre  = new ArrayList<>(genre);
