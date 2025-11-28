@@ -11,7 +11,7 @@ public final class FormatValidator {
 
     // Compiled patterns for better performance
     private static final Pattern MOVIE_TITLE_PATTERN =
-        Pattern.compile("([A-Z][a-zA-Z]*)(-[A-Z][a-zA-Z]*)*(\\s([A-Z][a-zA-Z]*)(-[A-Z][a-zA-Z]*)*)*");
+        Pattern.compile("([A-Z][a-z]*)(-[A-Z][a-z]*)*(\\s([A-Z][a-z]*)(-[A-Z][a-z]*)*)*");
 
 
     private static final Pattern MOVIE_ID_PATTERN =

@@ -40,6 +40,12 @@ public class MovieTitleTest {
     }
     
     @Test
+    void TitleAllCapitalized() {
+        assertThrows(ValidationException.class,
+                () -> FormatValidator.validateMovieTitle("MEMENTO"));
+    }
+    
+    @Test
     void nullTitle() {
         assertThrows(ValidationException.class,
                 () -> FormatValidator.validateMovieTitle(null));
