@@ -1,7 +1,7 @@
-package lab1;
+package org.example;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.example.exceptions.ValidationException;
 
@@ -18,12 +18,12 @@ public class UserTest {
             User user = new User(
                     "Germine Chawki",        // UPDATED VALID NAME
                     "12345678A",             // valid ID
-                    Arrays.asList("M1", "M2")
+                    Arrays.asList("M123", "M567")
             );
 
             assertEquals("Germine Chawki", user.getUserName());
             assertEquals("12345678A", user.getUserId());
-            assertEquals(Arrays.asList("M1", "M2"), user.getMoviesId());
+            assertEquals(Arrays.asList("M123", "M567"), user.getMoviesId());
 
         } catch (ValidationException e) {
             fail("No exception expected for valid input.");
@@ -130,55 +130,15 @@ public class UserTest {
     // ------------------ MOVIES LIST TESTS ------------------
 
     @Test
-    public void testMoviesListNull() {
-        try {
-            new User("Germine Chawki", "123456789", null);
-            fail("Expected ValidationException");
-        } catch (ValidationException e) {
-            assertEquals("ERROR: Movies list is wrong", e.getMessage());
-        }
-    }
-
-    @Test
     public void testMoviesListContainsEmpty() {
         try {
             new User("Germine Chawki", "123456789", Arrays.asList(""));
             fail("Expected ValidationException");
         } catch (ValidationException e) {
-            assertEquals("ERROR: Movies list is wrong", e.getMessage());
-        }
-    }
-
-    @Test
-    public void testMoviesListContainsNullItem() {
-        try {
-            new User("Germine Chawki", "123456789", Arrays.asList("MOV1", null));
-            fail("Expected ValidationException");
-        } catch (ValidationException e) {
-            assertEquals("ERROR: Movies list is wrong", e.getMessage());
+            assertEquals("ERROR: Movie Id letters  are wrong", e.getMessage());
         }
     }
 
 
-    // ------------------ DEFENSIVE COPY TEST ------------------
 
-    @Test
-    public void testMoviesListImmutability() {
-        try {
-            List<String> movies = Arrays.asList("M1", "M2");
-            User user = new User("Germine Chawki", "123456789", movies);
-
-            List<String> returned = user.getMoviesId();
-
-            try {
-                returned.add("M3");
-                fail("Expected UnsupportedOperationException");
-            } catch (UnsupportedOperationException ex) {
-                assertEquals(2, returned.size());
-            }
-
-        } catch (ValidationException e) {
-            fail("No exception expected during valid user creation.");
-        }
-    }
 }

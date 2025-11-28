@@ -31,9 +31,13 @@ public class MovieTitleTest {
         );
     }
 
-
     
-    
+    @Test
+    void TitleWithHyphen() {
+        assertDoesNotThrow(() ->
+            FormatValidator.validateMovieTitle("Spider-Man")
+        );
+    }
     
     @Test
     void nullTitle() {
