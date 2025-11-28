@@ -109,4 +109,32 @@ public class LoaderTest {
             System.out.println(e.getMessage());
         }
     }
+
+    @Test
+    void testMovieIdUnique(){
+        String filename = "./src/test/java/org/example/movies with dublicated id.txt";
+        ByteArrayInputStream bais = new ByteArrayInputStream(filename.getBytes());
+        System.setIn(bais);
+        try{
+            List<Movie> actual =loader.loadMovies();
+            fail("expected exception");
+        }
+        catch(Exception e){
+            assertEquals(e.getMessage(), "ERROR: Movie Master's Id is not unique");
+        }
+    }
+
+    @Test
+    void testUserIdUnique(){
+        String filename = "./src/test/java/org/example/users with dublicated id.txt";
+        ByteArrayInputStream bais = new ByteArrayInputStream(filename.getBytes());
+        System.setIn(bais);
+        try{
+            List<User> actual =loader.loadUsers();
+            fail("expected exception");
+        }
+        catch(Exception e){
+            assertEquals(e.getMessage(), "ERROR: User Ali Tamer's Id is not unique");
+        }
+    }
 }

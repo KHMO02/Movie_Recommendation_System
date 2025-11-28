@@ -10,7 +10,9 @@ public class ValidationException extends Exception {
         USER_NAME("ERROR: User Name %s is wrong"),
         USER_ID("ERROR: User Id %s is wrong"),
         FILE_MOVIES_FORMAT("ERROR: Movies file format is wrong"),
-        FILE_USERS_FORMAT("ERROR: Users file format is wrong");
+        FILE_USERS_FORMAT("ERROR: Users file format is wrong"),
+        MOVIE_ID_NOT_UNIQUE("ERROR: Movie %s's Id is not unique"),
+        USER_ID_NOT_UNIQUE("ERROR: User %s's Id is not unique"),;
 
         private final String template;
 

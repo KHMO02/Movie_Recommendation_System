@@ -9,8 +9,11 @@ import java.io.IOException;
 import java.util.*;
 
 public class Loader {
+    private List<String> MoviesId;
+    private List<String> UsersId;
 
     public List<Movie> loadMovies() throws IOException, ValidationException {
+        MoviesId = new ArrayList<>();
         List<String> lines = readLinesFromUser("Enter movies' file name/path: ");
         List<Movie> movies = new ArrayList<>();
 
@@ -18,6 +21,8 @@ public class Loader {
             String[] firstLine = splitHeaderLine(lines, i, ErrorMessage.FILE_MOVIES_FORMAT);
             String title = firstLine[0];
             String id = firstLine[1];
+            if(isMovieIdUnique(id)) MoviesId.add(id);
+            else throw new ValidationException(ErrorMessage.MOVIE_ID_NOT_UNIQUE, title);
 
             String[] secondLine = lines.get(i + 1).split(",\\s*");
             List<String> genres = Arrays.asList(secondLine);
@@ -28,6 +33,7 @@ public class Loader {
     }
 
     public List<User> loadUsers() throws IOException, ValidationException {
+        UsersId = new ArrayList<>();
         List<String> lines = readLinesFromUser("Enter users' file name/path: ");
         List<User> users = new ArrayList<>();
 
@@ -35,6 +41,8 @@ public class Loader {
             String[] firstLine = splitHeaderLine(lines, i, ErrorMessage.FILE_USERS_FORMAT);
             String name = firstLine[0];
             String id = firstLine[1];
+            if(isUserIdUnique(id)) UsersId.add(id);
+            else throw new ValidationException(ErrorMessage.USER_ID_NOT_UNIQUE, name);
 
             String[] secondLine = lines.get(i + 1).split(",\\s*");
             List<String> movieIds = Arrays.asList(secondLine);
@@ -75,5 +83,23 @@ public class Loader {
         }
 
         return lines;
+    }
+
+    private boolean isMovieIdUnique(String id) {
+        for (int i = 0; i < MoviesId.size(); i++) {
+            if (MoviesId.get(i).equals(id)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isUserIdUnique(String id) {
+        for (int i = 0; i < UsersId.size(); i++) {
+            if (UsersId.get(i).equals(id)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
