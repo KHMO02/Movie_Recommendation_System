@@ -36,3 +36,9 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/.idea/encodings.xml
+/.idea/git_toolbox_prj.xml
+/.idea/GitCommitMessageStorage.xml
+/.idea/misc.xml
+/recommendations.txt
+/.idea/vcs.xml

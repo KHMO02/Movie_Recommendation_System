@@ -1,11 +1,11 @@
 package org.example;
 
-import org.example.exceptions.ValidationException;
+import org.example.exception.ValidationException;
+import org.example.model.Movie;
+import org.example.model.User;
 import org.junit.jupiter.api.*;
-import org.mockito.Mockito;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

@@ -1,6 +1,7 @@
-package org.example;
+package org.example.model;
 
-import org.example.exceptions.ValidationException;
+import org.example.validation.FormatValidator;
+import org.example.exception.ValidationException;
 
 import java.util.ArrayList;
 import java.util.List;

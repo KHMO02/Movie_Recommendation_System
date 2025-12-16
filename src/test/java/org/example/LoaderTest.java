@@ -1,6 +1,7 @@
 package org.example;
 
-import org.junit.jupiter.api.Assertions;
+import org.example.model.Movie;
+import org.example.model.User;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

@@ -5,8 +5,8 @@
 package org.example;
 
 import org.junit.jupiter.api.Test;
-import org.example.Movie;
-import org.example.exceptions.ValidationException;
+import org.example.model.Movie;
+import org.example.exception.ValidationException;
 
 import java.util.List;
 

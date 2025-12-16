@@ -1,8 +1,8 @@
 package org.example;
 
+import org.example.validation.FormatValidator;
 import org.junit.jupiter.api.Test;
-import org.example.FormatValidator;
-import org.example.exceptions.ValidationException;
+import org.example.exception.ValidationException;
 
 import static org.junit.jupiter.api.Assertions.*;
 

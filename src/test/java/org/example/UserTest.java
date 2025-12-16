@@ -1,12 +1,12 @@
 package org.example;
 
+import org.example.model.User;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.example.exceptions.ValidationException;
+import org.example.exception.ValidationException;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class UserTest {
 
