@@ -34,17 +34,14 @@ public abstract class EntityLoader<T>
 
     public List<T> load() throws IOException, ValidationException
     {
-        idValidator.reset();
-
         List<String> lines = fileReader.readLines(getPromptMessage());
         List<ParsedEntity> parsedEntities = parser.parse(lines, getFormatErrorMessage());
 
+        idValidator.validateAllUnique(parsedEntities, getIdNotUniqueError());
+
         List<T> entities = new ArrayList<>();
         for (ParsedEntity parsed : parsedEntities)
-        {
-            idValidator.validateUnique(parsed.getId(), parsed.getName(), getIdNotUniqueError());
             entities.add(createEntity(parsed));
-        }
 
         return entities;
     }

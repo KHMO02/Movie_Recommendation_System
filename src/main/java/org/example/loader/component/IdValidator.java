@@ -4,6 +4,7 @@ import org.example.exception.ValidationException;
 import org.example.exception.ValidationException.ErrorMessage;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -11,16 +12,12 @@ import java.util.Set;
  */
 public class IdValidator
 {
-    private final Set<String> seenIds = new HashSet<>();
 
-    public void validateUnique(String id, String name, ErrorMessage error) throws ValidationException
+    public void validateAllUnique(List<ParsedEntity> entities, ErrorMessage error) throws ValidationException
     {
-        if (!seenIds.add(id))
-            throw new ValidationException(error, name);
-    }
-
-    public void reset()
-    {
-        seenIds.clear();
+        Set<String> seen = new HashSet<>();
+        for (ParsedEntity entity : entities)
+            if (!seen.add(entity.getId()))
+                throw new ValidationException(error, entity.getName()); // Throw immediately when duplicate found
     }
 }

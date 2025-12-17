@@ -19,9 +19,6 @@ public class OutputWriter
 
     public void writeRecommendations(List<UserRecommendations> allRecommendations) throws IOException
     {
-        System.out.println("DEBUG: Writing to: " + new File(OUTPUT_FILE).getAbsolutePath());
-        System.out.println("DEBUG: Number of users: " + allRecommendations.size());
-
         try (FileWriter writer = new FileWriter(OUTPUT_FILE))
         {
             for (int i = 0; i < allRecommendations.size(); i++)
@@ -31,14 +28,11 @@ public class OutputWriter
                     writer.write('\n');
             }
         }
-
-        System.out.println("DEBUG: File written successfully!");
         openFile();
     }
 
     public void writeError(String message)
     {
-        System.err.println("ERROR: " + message);
         try (FileWriter writer = new FileWriter(OUTPUT_FILE))
         {
             writer.write("ERROR: " + message);
@@ -46,26 +40,20 @@ public class OutputWriter
         catch (IOException e)
         {
             System.err.println("Failed to write error: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
-
     private void writeUserBlock(FileWriter writer, UserRecommendations userRec) throws IOException
     {
-        User user = userRec.getUser();
-        System.out.println("DEBUG: Writing recommendations for: " + user.getUserName());
-
+        User user = userRec.user();
         writer.write(user.getUserName() + ", " + user.getUserId());
         writer.write('\n');
 
-        writeMovieList(writer, userRec.getRecommendations());
+        writeMovieList(writer, userRec.recommendations());
     }
 
     private void writeMovieList(FileWriter writer, List<Movie> movies) throws IOException
     {
-        System.out.println("DEBUG: Number of recommendations: " + movies.size());
-
         for (int i = 0; i < movies.size(); i++)
         {
             writer.write(movies.get(i).getTitle());
