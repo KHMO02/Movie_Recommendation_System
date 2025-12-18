@@ -36,7 +36,7 @@ public class OutputWriter
     {
         try (FileWriter writer = new FileWriter(OUTPUT_FILE))
         {
-            writer.write("ERROR: " + message);
+            writer.write(message);
         }
         catch (IOException e)
         {
