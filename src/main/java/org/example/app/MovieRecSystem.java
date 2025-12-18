@@ -1,12 +1,12 @@
-package org.example;
+package org.example.app;
 
 import org.example.exception.ValidationException;
-import org.example.loader.MovieLoader;
-import org.example.loader.UserLoader;
+import org.example.io.loader.MovieLoader;
+import org.example.io.loader.UserLoader;
 import org.example.model.Movie;
 import org.example.model.User;
 import org.example.recommendation.Recommender;
-import org.example.recommendation.OutputWriter;
+import org.example.io.output.OutputWriter;
 import org.example.recommendation.UserRecommendations;
 
 import java.io.IOException;

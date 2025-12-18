@@ -1,8 +1,8 @@
-package org.example.loader;
+package org.example.io.loader;
 
 import org.example.exception.ValidationException;
 import org.example.exception.ValidationException.ErrorMessage;
-import org.example.loader.component.ParsedEntity;
+import org.example.io.loader.component.ParsedEntity;
 import org.example.model.Movie;
 
 /**

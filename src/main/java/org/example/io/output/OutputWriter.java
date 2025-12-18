@@ -1,7 +1,8 @@
-package org.example.recommendation;
+package org.example.io.output;
 
 import org.example.model.Movie;
 import org.example.model.User;
+import org.example.recommendation.UserRecommendations;
 
 import java.awt.Desktop;
 import java.io.File;

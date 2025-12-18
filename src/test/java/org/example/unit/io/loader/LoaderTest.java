@@ -1,4 +1,4 @@
-package org.example;
+package org.example.unit.io.loader;
 
 import org.example.model.Movie;
 import org.example.model.User;

@@ -2,17 +2,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
  */
-package org.example;
+package org.example.unit.model;
 
 import org.junit.jupiter.api.Test;
-import org.example.model.Movie;
 import org.example.exception.ValidationException;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MovieConstructorTest {
+public class MovieTest
+{
 
     @Test
     void validMovie() {

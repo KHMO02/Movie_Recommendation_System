@@ -1,4 +1,4 @@
-package org.example.loader.component;
+package org.example.io.loader.component;
 
 import java.io.BufferedReader;
 import java.io.IOException;

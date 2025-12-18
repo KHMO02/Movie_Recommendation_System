@@ -1,4 +1,4 @@
-package org.example.loader.component;
+package org.example.io.loader.component;
 
 import org.example.exception.ValidationException;
 import org.example.exception.ValidationException.ErrorMessage;

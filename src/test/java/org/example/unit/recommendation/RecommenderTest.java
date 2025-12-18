@@ -1,4 +1,4 @@
-package org.example;
+package org.example.unit.recommendation;
 
 import org.example.exception.ValidationException;
 import org.example.model.Movie;
