@@ -38,7 +38,7 @@ class RecommenderTest
         List<Movie> rec = recommender.recommendForUser(u);
 
         assertEquals(1, rec.size());
-        assertEquals("Superman Returns", rec.getFirst().getTitle());
+        assertEquals("Superman Returns", rec.get(0).getTitle());
     }
 
     @Test
@@ -87,7 +87,7 @@ class RecommenderTest
         List<Movie> recommendations = localRec.recommendForUser(user);
 
         assertEquals(1, recommendations.size());
-        assertEquals("Se7en", recommendations.getFirst().getTitle());
+        assertEquals("Se7en", recommendations.get(0).getTitle());
     }
 
     @Test
@@ -124,7 +124,7 @@ class RecommenderTest
         assertEquals("User Two", allRecs.get(1).user().getUserName());
 
         assertEquals(1, allRecs.get(0).recommendations().size());
-        assertEquals("Hulk", allRecs.get(0).recommendations().getFirst().getTitle());
+        assertEquals("Hulk", allRecs.get(0).recommendations().get(0).getTitle());
 
         assertTrue(allRecs.get(1).recommendations().isEmpty());
     }
