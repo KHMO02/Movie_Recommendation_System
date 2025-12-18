@@ -1,4 +1,0 @@
-Alice Smith, 12345678A
-TMX123
-Bob Johnson, 87654321B
-INC456, TIT789
