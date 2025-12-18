@@ -7,7 +7,7 @@ import org.example.io.loader.component.FileReader;
 import org.example.io.loader.component.IdValidator;
 import org.example.io.loader.component.ParsedEntity;
 import org.example.io.loader.component.TwoLineParser;
-import org.example.loader.component.*;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,9 +18,9 @@ import java.util.List;
  */
 public abstract class EntityLoader<T>
 {
-    private final FileReader fileReader;
-    private final TwoLineParser parser;
-    private final IdValidator idValidator;
+    protected final FileReader fileReader;
+    protected final TwoLineParser parser;
+    protected final IdValidator idValidator;
 
     // Default constructor with default dependencies
     public EntityLoader()

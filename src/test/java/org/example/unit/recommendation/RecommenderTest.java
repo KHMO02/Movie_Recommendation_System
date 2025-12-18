@@ -3,209 +3,130 @@ package org.example.unit.recommendation;
 import org.example.exception.ValidationException;
 import org.example.model.Movie;
 import org.example.model.User;
-import org.junit.jupiter.api.*;
+import org.example.recommendation.Recommender;
+import org.example.recommendation.UserRecommendations;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
-class RecommenderTest {
+class RecommenderTest
+{
 
     private Recommender recommender;
-    private final String OUTPUT_FILE = "recommendations.txt";
 
     @BeforeEach
-    void setUp() {
-        recommender = new Recommender();
-    }
+    void setUp() throws ValidationException
+    {
+        Movie m1 = new Movie("The Batman", "TB001", List.of("Action"));
+        Movie m2 = new Movie("Superman Returns", "SR001", List.of("Action", "Comedy"));
+        Movie m3 = new Movie("Funny Movie", "FM001", List.of("Comedy"));
 
-    @AfterEach
-    void tearDown() {
-        File f = new File(OUTPUT_FILE);
-        if (f.exists()) {
-            f.delete();
-        }
+        List<Movie> allMovies = List.of(m1, m2, m3);
+        recommender = new Recommender(allMovies);
     }
-
-    private String readFileContent() throws IOException {
-        return Files.readString(Path.of(OUTPUT_FILE));
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    private Movie mockMovie(String title, String id, List<String> genres) {
-        Movie m = mock(Movie.class);
-        when(m.getTitle()).thenReturn(title);
-        when(m.getId()).thenReturn(id);
-        when(m.getGenre()).thenReturn(genres);
-        return m;
-    }
-
-    private User mockUser(String name, String id, List<String> likedIds) {
-        User u = mock(User.class);
-        when(u.getUserName()).thenReturn(name);
-        when(u.getUserId()).thenReturn(id);
-        when(u.getMoviesId()).thenReturn(likedIds);
-        return u;
-    }
-    
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Test
-    void testRecommendForUser_LikedGenreRecommendations() {
-        // Req.: If user likes a movie from genre X then recommend all other movies in that genre
-        Movie m1 = mockMovie("The Batman", "B001", List.of("Action"));
-        Movie m2 = mockMovie("Superman", "SUP002", List.of("Action", "Comedy"));
-        Movie m3 = mockMovie("Funny Movie", "FUN003", List.of("Comedy"));
+    void recommendForUser_likedGenreRecommendations() throws ValidationException
+    {
+        User u = new User("John Wick", "123456789", List.of("TB001"));
 
-        List<Movie> all = List.of(m1, m2, m3);
-
-        User u = mockUser("John", "U1", List.of("B001"));
-
-        List<Movie> rec = recommender.recommendForUser(u, all);
+        List<Movie> rec = recommender.recommendForUser(u);
 
         assertEquals(1, rec.size());
-        assertEquals("Superman", rec.get(0).getTitle());
+        assertEquals("Superman Returns", rec.getFirst().getTitle());
     }
 
     @Test
-    void testRecommendForUser_NoRecommendation() {
-        // Req.: Do not recommend the movie the user has already liked
-        Movie m1 = mockMovie("The Batman", "B001", List.of("Action"));
-        Movie m2 = mockMovie("Superman", "SUP002", List.of("Drama"));
-        Movie m3 = mockMovie("Funny Movie", "FUN003", List.of("Comedy"));
+    void recommendForUser_noRecommendationWhenNoGenreMatch() throws ValidationException
+    {
+        User u = new User("Neo", "987654321", List.of("NON_EXISTENT"));
 
-        List<Movie> allMovies = Arrays.asList(m1, m2, m3);
-        User u = mockUser("Neo", "U1", List.of("B001"));
+        List<Movie> rec = recommender.recommendForUser(u);
 
-        List<Movie> recommendations = recommender.recommendForUser(u, allMovies);
-
-        assertTrue(recommendations.isEmpty(), "Should not recommend a movie the user already liked");
+        assertTrue(rec.isEmpty());
     }
 
     @Test
-    void testRecommendForUser_MultiGenreMatch() {
-        // Req.: matching movie of multiple genres with others
+    void recommendForUser_multiGenreMatch() throws ValidationException
+    {
+        Movie m1 = new Movie("Scream", "SCR001", List.of("Horror", "Thriller"));
+        Movie m2 = new Movie("Se7en", "SEV001", List.of("Thriller", "Crime"));
+        Movie m3 = new Movie("The Nun", "NUN001", List.of("Horror"));
+        Movie m4 = new Movie("Superman Returns", "SR001", List.of("Thriller"));
+        Movie m5 = new Movie("Funny Movie", "FM001", List.of("Comedy"));
 
-        Movie m1 = mockMovie("Scream", "SCR001", List.of("Horror", "Thriller"));
-        Movie m2 = mockMovie("Se7en", "SEV001", List.of("Thriller", "Crime"));
-        Movie m3 = mockMovie("The Batman", "B001", List.of("Horror"));
-        Movie m4 = mockMovie("Superman", "SUP002", List.of("Thriller"));
-        Movie m5 = mockMovie("Funny Movie", "FUN003", List.of("Comedy"));
+        List<Movie> movies = Arrays.asList(m1, m2, m3, m4, m5);
+        Recommender localRec = new Recommender(movies);
 
-        List<Movie> allMovies = Arrays.asList(m1, m2, m3, m4, m5);
-        User u = mockUser("Ghostface", "U1", List.of("SCR001"));
+        User u = new User("Ghostface", "123456780", List.of("SCR001"));
 
-        List<Movie> recommendations = recommender.recommendForUser(u, allMovies);
+        List<Movie> recommendations = localRec.recommendForUser(u);
 
         assertEquals(3, recommendations.size());
-        //make sure of multiple genre matching between Scream and Se7en
         assertEquals("Se7en", recommendations.get(0).getTitle());
-        assertEquals("The Batman", recommendations.get(1).getTitle());
-        assertEquals("Superman", recommendations.get(2).getTitle());
+        assertEquals("The Nun", recommendations.get(1).getTitle());
+        assertEquals("Superman Returns", recommendations.get(2).getTitle());
     }
 
     @Test
-    void testRecommendForUser_SameGenresOnce() {
-        // Req.: matching movie of multiple genres with others
-        Movie m1 = mockMovie("Scream", "SCR001", Arrays.asList("Horror", "Thriller"));
-        Movie m2 = mockMovie("Se7en", "SEV001", Arrays.asList("Horror", "Thriller"));
+    void recommendForUser_sameGenresOnce() throws ValidationException
+    {
+        Movie m1 = new Movie("Scream", "SCR001", Arrays.asList("Horror", "Thriller"));
+        Movie m2 = new Movie("Se7en", "SEV001", Arrays.asList("Horror", "Thriller"));
 
-        List<Movie> allMovies = Arrays.asList(m1, m2);
-        User user = mockUser("Ghostface", "USER001", Arrays.asList("SCR001"));
+        List<Movie> movies = Arrays.asList(m1, m2);
+        Recommender localRec = new Recommender(movies);
 
-        List<Movie> recommendations = recommender.recommendForUser(user, allMovies);
+        User user = new User("Ghostface", "123456781", Collections.singletonList("SCR001"));
+
+        List<Movie> recommendations = localRec.recommendForUser(user);
 
         assertEquals(1, recommendations.size());
-        //make sure of multiple genre matching between Scream and Se7en
-        assertEquals("Se7en", recommendations.get(0).getTitle());
+        assertEquals("Se7en", recommendations.getFirst().getTitle());
     }
 
     @Test
-    void testRecommendForUser_NoLikes() throws ValidationException {
-        Movie m1 = mockMovie("Movie A", "MOV001", Arrays.asList("Drama"));
-        List<Movie> allMovies = Collections.singletonList(m1);
+    void recommendForUser_noLikes() throws ValidationException
+    {
+        Movie m1 = new Movie("Movie A", "MOV001", Collections.singletonList("Drama"));
+        List<Movie> movies = Collections.singletonList(m1);
+        Recommender localRec = new Recommender(movies);
 
-        // User likes nothing
-        User user = mockUser("Bored", "USER001", new ArrayList<>());
+        User user = new User("Bored User", "123456782", Collections.emptyList());
 
-        List<Movie> recommendations = recommender.recommendForUser(user, allMovies);
+        List<Movie> recommendations = localRec.recommendForUser(user);
 
-        assertTrue(recommendations.isEmpty(), "If user likes nothing, recommendations should be empty");
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    @Test
-    void testWriteRecommendations_FileCreationAndFormat() throws IOException {
-        //Req.: file creation and its format
-        Movie m1 = mockMovie("Iron Man", "IRO001", Arrays.asList("Action"));
-        Movie m2 = mockMovie("Hulk", "HUL001", Arrays.asList("Action"));
-        Movie m3 = mockMovie("Thor", "THO001", Arrays.asList("Action"));
-        List<Movie> allMovies = Arrays.asList(m1, m2, m3);
-
-        User u1 = mockUser("Tony Stark", "USER00001", Arrays.asList("IRO001"));
-
-        recommender.writeRecommendations(List.of(u1), allMovies);
-
-        // Verify that the file does exist
-        File file = new File(OUTPUT_FILE);
-        assertTrue(file.exists(), "recommendations.txt should be created");
-
-        String content = readFileContent();
-        String expectedLine1 = "Tony Stark, USER00001"; // Name, ID
-
-        //Make sure of file contents
-        assertTrue(content.contains(expectedLine1), "File should contain user header");
-        assertTrue(content.contains("Hulk"), "File should contain recommended movie Hulk");
-        assertTrue(content.contains("Thor"), "File should contain recommended movie Thor");
-        // Check Comma separation in the file according to what processed first
-        assertTrue(content.contains("Hulk, Thor") || content.contains("Thor, Hulk"), "Movies should be comma separated");
+        assertTrue(recommendations.isEmpty());
     }
 
     @Test
-    void testWriteRecommendations_MultipleUsers() throws IOException {
-        //Req.: multiple users recommendations
-        Movie m1 = mockMovie("Iron Man", "IRO001", Arrays.asList("Action"));
-        Movie m2 = mockMovie("Hulk", "HUL001", Arrays.asList("Action"));
-        Movie m3 = mockMovie("Notebook", "NOT001", Arrays.asList("Drama"));
+    void recommendForAllUsers_buildsUserRecommendationsPerUser() throws ValidationException
+    {
+        Movie action = new Movie("Iron Man", "IRM001", List.of("Action"));
+        Movie hulk = new Movie("Hulk", "HUL001", List.of("Action"));
+        Movie drama = new Movie("Notebook", "NTB001", List.of("Drama"));
 
-        List<Movie> allMovies = Arrays.asList(m1, m2, m3);
+        List<Movie> movies = Arrays.asList(action, hulk, drama);
+        Recommender localRec = new Recommender(movies);
 
-        User u1 = mockUser("User One", "ID1", Arrays.asList("IRO001"));
-        User u2 = mockUser("User Two", "ID2", Arrays.asList("NOT001"));
+        User u1 = new User("User One", "123456783", List.of("IRM001"));
+        User u2 = new User("User Two", "123456784", List.of("NTB001"));
 
-        recommender.writeRecommendations(Arrays.asList(u1, u2), allMovies);
+        List<UserRecommendations> allRecs = localRec.recommendForAllUsers(List.of(u1, u2));
 
-        String content = readFileContent();
-        // Check formatting implies new lines between users
-        // Note: The logic in Recommender writes a newline only if (u < users.size() - 1)
-        assertTrue(content.contains("User One, ID1"), "User 1 header missing");
-        assertTrue(content.contains("User Two, ID2"), "User 2 header missing");
+        assertEquals(2, allRecs.size());
+        assertEquals("User One", allRecs.get(0).user().getUserName());
+        assertEquals("User Two", allRecs.get(1).user().getUserName());
+
+        assertEquals(1, allRecs.get(0).recommendations().size());
+        assertEquals("Hulk", allRecs.get(0).recommendations().getFirst().getTitle());
+
+        assertTrue(allRecs.get(1).recommendations().isEmpty());
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////
-
-    @Test
-    void testWriteErrorMsg() throws IOException {
-        String errorMsg = "ERROR: User Name {  } is wrong";
-
-        recommender.writeErrorMsg(errorMsg);
-
-        File file = new File(OUTPUT_FILE);
-        assertTrue(file.exists());
-
-        String content = readFileContent();
-        assertEquals(errorMsg, content, "File should contain exactly the error message");
-    }
 }

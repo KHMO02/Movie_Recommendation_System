@@ -2,7 +2,10 @@ package org.example.io.loader;
 
 import org.example.exception.ValidationException;
 import org.example.exception.ValidationException.ErrorMessage;
+import org.example.io.loader.component.FileReader;
+import org.example.io.loader.component.IdValidator;
 import org.example.io.loader.component.ParsedEntity;
+import org.example.io.loader.component.TwoLineParser;
 import org.example.model.Movie;
 
 /**
@@ -10,6 +13,13 @@ import org.example.model.Movie;
  */
 public class MovieLoader extends EntityLoader<Movie>
 {
+    public MovieLoader() {
+        super();
+    }
+
+    public MovieLoader(FileReader fileReader, TwoLineParser parser, IdValidator idValidator) {
+        super(fileReader, parser, idValidator);
+    }
 
     @Override
     protected String getPromptMessage()

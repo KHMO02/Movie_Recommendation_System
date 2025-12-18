@@ -4,6 +4,7 @@
  */
 package org.example.unit.model;
 
+import org.example.model.Movie;
 import org.junit.jupiter.api.Test;
 import org.example.exception.ValidationException;
 
