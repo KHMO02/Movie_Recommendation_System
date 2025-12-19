@@ -1,4 +1,4 @@
-package org.example.WhiteBoxTesting;
+package org.example.WhiteBox.Coverage;
 
 import org.example.io.output.OutputWriter;
 import org.example.model.Movie;

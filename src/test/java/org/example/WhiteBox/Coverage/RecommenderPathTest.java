@@ -1,4 +1,4 @@
-package org.example.WhiteBoxTesting;
+package org.example.WhiteBox.Coverage;
 
 import org.example.exception.ValidationException;
 import org.example.model.Movie;

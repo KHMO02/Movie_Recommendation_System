@@ -1,4 +1,4 @@
-package org.example.WhiteBoxTesting;
+package org.example.WhiteBox.Coverage;
 
 import java.util.ArrayList;
 import java.util.List;
