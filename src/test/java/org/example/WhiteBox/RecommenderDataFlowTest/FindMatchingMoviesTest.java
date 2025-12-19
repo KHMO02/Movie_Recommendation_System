@@ -77,4 +77,22 @@ public class FindMatchingMoviesTest {
         assertEquals("RS123", result.get(0).getId());
     }
 
+    @Test
+    void findMatchingMovies_AllDUPaths_NoAdd() throws Exception {
+        Movie movie = new Movie("Drama Only", "DO123", List.of("Drama"));
+        Recommender recommender = new Recommender(List.of(movie));
+
+        Method method = Recommender.class
+                .getDeclaredMethod("findMatchingMovies", Set.class, Set.class);
+        method.setAccessible(true);
+
+        List<Movie> result =
+                (List<Movie>) method.invoke(
+                        recommender,
+                        Set.of("DO123"),   // forces continue
+                        Set.of("Drama")
+                );
+
+        assertTrue(result.isEmpty());
+    }
 }
