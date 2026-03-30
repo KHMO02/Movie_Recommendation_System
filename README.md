@@ -260,9 +260,5 @@ mvn -Dtest="org.example.integration.bottomup.**.*IT,org.example.integration.bott
 mvn -Dtest="org.example.system.*Test" test
 ```
 
-## Roadmap
-
-- Add interfaces for key services (`Recommender`, output abstraction) to make DIP even stronger.
-- Add CI pipeline for automated build and test reporting.
-- Add coverage thresholds and mutation testing.
-- Add configuration-driven input/output paths to reduce console interaction in production runs.
+> [!NOTE]
+> This readme was generated with the help of AI tools.
